@@ -9,7 +9,6 @@ def read_portfolio(filename):
 
     with open(filename) as f:
         rows = csv.reader(f)
-        next(rows)
         mainport = []
         for row in rows:
             stock, nshare, price = row[0], int(row[1]), float(row[2].strip())
