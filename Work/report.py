@@ -12,7 +12,7 @@ def read_portfolio(filename):
         next(rows)
         mainport = []
         for row in rows:
-            stock, nshare, price = row[0], int(row[1]), float(row[1].strip())
+            stock, nshare, price = row[0], int(row[1]), float(row[2].strip())
             mainport.append((stock, nshare, price))
     
     return mainport
