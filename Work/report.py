@@ -63,7 +63,7 @@ def make_report(portfolio, prices):
     report = []
     for holding in portfolio:
         report.append(
-            (holding['name'], holding['shares'], holding['price'], 
+            (holding['name'], holding['shares'], prices[holding['name']], 
              prices[holding['name']] - holding['price']
             )
         )
@@ -74,32 +74,36 @@ def make_report(portfolio, prices):
 if __name__ == '__main__':
     from pprint import pprint
     
-    ''' ----------- 2.6 and 2.5 exercises
-    myport = read_portfolio('Data/portfolio.csv')
-    currentprices = read_prices('Data/prices.csv')
+    # ----------- 2.6 and 2.5 exercises
+    # myport = read_portfolio('Data/portfolio.csv')
+    # currentprices = read_prices('Data/prices.csv')
 
-    print('My portfolio:')
-    pprint(myport)
-    print()
-    print('Current prices')
-    pprint(currentprices)
+    # print('My portfolio:')
+    # pprint(myport)
+    # print()
+    # print('Current prices')
+    # pprint(currentprices)
 
-    gainloss = 0
-    for holding in myport:
-        gainloss += holding['shares'] * (currentprices[holding['name']] - holding['price'])
+    # gainloss = 0
+    # for holding in myport:
+    #     gainloss += holding['shares'] * (currentprices[holding['name']] - holding['price'])
 
-    print()
-    print('Current gain/loss: ', gainloss)
+    # print()
+    # print('Current gain/loss: ', gainloss)
 
-    # ----------- 2.6 and 2.5 exercises ends
-    '''
+    #  ----------- 2.6 and 2.5 exercises ends
+    
 
 
-    #Exercise 2.10
+    #Exercise 2.10, 2.11, 2.12
     portfolio = read_portfolio('Data/portfolio.csv')
     prices = read_prices('Data/prices.csv')
     report = make_report(portfolio, prices)
 
+    headers = ('Name', 'Shares', 'Price', 'Change')
+
+    print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
+    print(f'{"":->10s} {"":->10s} {"":->10s} {"":->10s}')
     for stock, shares, orgprice, change in report:
-        print(f'{stock:>10s} {shares:>10d} {orgprice:>10.2f} {change:>10.2f}')
+        print(f'{stock:>10s} {shares:>10d} {"$"+f"{orgprice:.2f}":>10s} {change:>10.2f}')
             
