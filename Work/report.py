@@ -3,6 +3,7 @@
 # Exercise 2.4
 
 import csv
+import sys
 
 # def read_portfolio(filename):
 #     '''Import a portfolio from filename and return a list of holdings
@@ -26,10 +27,11 @@ def read_portfolio(filename):
 
     with open(filename) as f:
         rows = csv.reader(f)
-        next(rows)
+        header = next(rows)
         mainport = []
         for row in rows:
-            stock, nshare, price = row[0], int(row[1]), float(row[2].strip())
+            record = dict(zip(header, row))
+            stock, nshare, price = record['name'], int(record['shares']), float(record['price'].strip())
             mainport.append({
                 'name':stock,
                 'shares':nshare,
@@ -70,6 +72,10 @@ def make_report(portfolio, prices):
     
     return report
 
+if len(sys.argv) == 2:
+    portfolio_file = sys.argv[1]
+else:
+    portfolio_file = 'Data/portfolio.csv' 
 
 if __name__ == '__main__':
     from pprint import pprint
@@ -96,7 +102,7 @@ if __name__ == '__main__':
 
 
     #Exercise 2.10, 2.11, 2.12
-    portfolio = read_portfolio('Data/portfolio.csv')
+    portfolio = read_portfolio(portfolio_file)
     prices = read_prices('Data/prices.csv')
     report = make_report(portfolio, prices)
 
