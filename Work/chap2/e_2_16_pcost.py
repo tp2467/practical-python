@@ -5,40 +5,44 @@
 import csv
 import sys
 
-def portfolio_cost(filename):
-    name = []
-    price = []
+def calculate_portfolio_cost(portfolio_file_path):
+    stock_name = []
+    stock_price = []
     shares = []
-    with open(filename, 'rt') as f:
+    with open(portfolio_file_path, 'rt') as f:
         rows = csv.reader(f)
         header = next(rows)
-        for linenum, line in enumerate(rows, start=1):
+        for line_num, line in enumerate(rows, start=1):
             record = dict(zip(header, line))
             try:
-                name.append(record['name'])
+                stock_name.append(record['name'])
+                stock_price.append(float(record['price']))
                 shares.append(int(record['shares']))
-                price.append(float(record['price']))
             except ValueError:
-                print(f"Row {linenum}: Couldn't convert: {line}")
+                print(f"Row {line_num}: Couldn't convert: {line}")
                 continue
     
-    total_cost = 0
-    for i in range(len(shares)):
-        total_cost += shares[i]*price[i]
+    total_cost = sum_product_shares_and_prices(shares, stock_price)
 
     return total_cost
 
+def sum_product_shares_and_prices(shares, stock_prices):
+    total_portfolio_cost = 0.0
+    for share_num, price in zip(shares, stock_prices):
+        total_portfolio_cost += share_num*price
+    return total_portfolio_cost
+
 if len(sys.argv) == 2:
-    filename = sys.argv[1]
+    portfolio_file_path = sys.argv[1]
 else:
-    filename = 'Data/portfolio.csv'
+    portfolio_file_path = '../Data/portfolio.csv'
 
 if __name__ == '__main__':
     print('Test case 1:')
-    total_cost1 = portfolio_cost(filename)
+    total_cost1 = calculate_portfolio_cost(portfolio_file_path)
     print('Total cost 1', total_cost1)
     print()
     
     print('Test case 2:')
-    total_cost2 = portfolio_cost('Data/missing.csv')
+    total_cost2 = calculate_portfolio_cost('../Data/portfoliodate.csv')
     print('Total cost 2', total_cost2)
