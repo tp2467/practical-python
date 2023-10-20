@@ -3,9 +3,9 @@
 # Exercise 1.17
 # Print with format
 
-principal = 320000 #400000.0
-rate = 0.07349
-payment = 2204 #2477.16
+principal = 304000 #400000.0
+rate = 0.06999
+payment = 2022 #2477.16
 total_paid = 0.0
 month = 0
 
@@ -37,3 +37,4 @@ print(f'Total months  {month:>15}')
 print(f'Total years   {month/12:>15.0f}', )
 print(f'Interest paid: ${total_paid - initial_principal:>15,.3f}')
 print(f'Average interest paid per year: {(total_paid - initial_principal)/(month/12):>15.2f}')
+print(f'Interest to original loan ratio: {(total_paid - initial_principal)/initial_principal:15.2f}')
