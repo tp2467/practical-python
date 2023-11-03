@@ -4,13 +4,32 @@
 
 import csv
 
-def parse_csv(filename, select=None):
+def parse_csv(filename, select=None, types=None, has_headers=True):
     '''
     Parse a csv file into a list of records
     '''
-    with open(filename) as f:
-        rows = csv.reader(f)
-
+    
+    def process_rows_no_header(rows):
+        '''
+        Process rows from file without any header
+        Return a list of n-tuples. Types of the items in each tuple must match
+        the order of the types argument in function.
+        '''
+        
+        records = []
+        for row in rows:
+            if not row : continue
+            casted_row = tuple([func(val) for func, val in zip(types, row)])
+            records.append(casted_row)
+                    
+        return records
+        
+    
+    def process_row_w_header(rows):
+        '''
+        Process rows from file with first line as a header.
+        Return a list of dictionary with keys as the header items.
+        '''
         headers = next(rows)
         records = []
 
@@ -20,9 +39,22 @@ def parse_csv(filename, select=None):
             for i, col in enumerate(headers):
                 if col in select: col_index.append(i)
         
+        filtered_headers = [headers[i] for i in col_index]
         for row in rows:
             if not row: continue
-            record = dict(zip([headers[i] for i in col_index ], [row[i] for i in col_index ]))
+            if types:
+                filtered_row = [func(row[i]) for i, func in zip(col_index, types)]
+            else:
+                filtered_row = [row[i] for i in col_index]
+            
+            record = dict(zip(filtered_headers, filtered_row))
             records.append(record)
 
-    return records
+        return records
+    
+    with open(filename) as f:
+        rows = csv.reader(f)
+        if has_headers:
+            return process_row_w_header(rows)
+        elif not has_headers:
+            return process_rows_no_header(rows)        
