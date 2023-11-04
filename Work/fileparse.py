@@ -1,10 +1,14 @@
 # fileparse.py
 #
-# Exercise 3.3
+# Exercise 3.3 - 3.7
 
 import csv
 
-def parse_csv(filename, select=None, types=None, has_headers=True):
+def parse_csv(filename,
+              select=None, 
+              types=None, 
+              has_headers=True,
+              delimiter=','):
     '''
     Parse a csv file into a list of records
     '''
@@ -53,7 +57,7 @@ def parse_csv(filename, select=None, types=None, has_headers=True):
         return records
     
     with open(filename) as f:
-        rows = csv.reader(f)
+        rows = csv.reader(f, delimiter=delimiter)
         if has_headers:
             return process_row_w_header(rows)
         elif not has_headers:
