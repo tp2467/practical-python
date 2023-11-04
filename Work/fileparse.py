@@ -8,7 +8,8 @@ def parse_csv(filename,
               select=None, 
               types=None, 
               has_headers=True,
-              delimiter=','):
+              delimiter=',',
+              silence_errors=False):
     '''
     Parse a csv file into a list of records
     '''
@@ -30,6 +31,7 @@ def parse_csv(filename,
                 casted_row = tuple([func(val) for func, val in zip(types, row)])
                 records.append(casted_row)
             except ValueError as e:
+                if silence_errors == True: continue
                 print(f"Row {index}: cannot convert {str(row)} ")
                 print(e)
                 continue
@@ -58,6 +60,7 @@ def parse_csv(filename,
                 try:
                     filtered_row = [func(row[i]) for i, func in zip(col_index, types)]
                 except ValueError as e:
+                    if silence_errors == True: continue
                     print(f"Row {index}: cannot convert {str(row)} ")
                     print(e)
                     continue
