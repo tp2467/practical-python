@@ -24,11 +24,16 @@ def parse_csv(filename,
         '''
         
         records = []
-        for row in rows:
+        for index, row in enumerate(rows):
             if not row : continue
-            casted_row = tuple([func(val) for func, val in zip(types, row)])
-            records.append(casted_row)
-                    
+            try:
+                casted_row = tuple([func(val) for func, val in zip(types, row)])
+                records.append(casted_row)
+            except ValueError as e:
+                print(f"Row {index}: cannot convert {str(row)} ")
+                print(e)
+                continue
+
         return records
         
     
@@ -47,10 +52,15 @@ def parse_csv(filename,
                 if col in select: col_index.append(i)
         
         filtered_headers = [headers[i] for i in col_index]
-        for row in rows:
+        for index, row in enumerate(rows):
             if not row: continue
             if types:
-                filtered_row = [func(row[i]) for i, func in zip(col_index, types)]
+                try:
+                    filtered_row = [func(row[i]) for i, func in zip(col_index, types)]
+                except ValueError as e:
+                    print(f"Row {index}: cannot convert {str(row)} ")
+                    print(e)
+                    continue
             else:
                 filtered_row = [row[i] for i in col_index]
             
