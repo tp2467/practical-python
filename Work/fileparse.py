@@ -12,7 +12,10 @@ def parse_csv(filename,
     '''
     Parse a csv file into a list of records
     '''
-    
+    if select is not None and has_headers == False:
+        print('select argument requires column headers')
+        raise RuntimeError('select argument requires column headers')
+
     def process_rows_no_header(rows):
         '''
         Process rows from file without any header
@@ -56,6 +59,7 @@ def parse_csv(filename,
 
         return records
     
+
     with open(filename) as f:
         rows = csv.reader(f, delimiter=delimiter)
         if has_headers:
