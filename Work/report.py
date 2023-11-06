@@ -4,14 +4,24 @@ import sys
 sys.path.append('/home/thinh/Documents/practical-python/Work')
 import fileparse
 
-def read_portfolio(filename: str) -> dict:
+def read_portfolio(filename: str,
+                   select=None,
+                   types=None,
+                   has_headers=True,
+                   delimiter=',',
+                   silence_errors=False
+    ) -> dict:
     '''Import a portfolio from filename and return a list of dictionaries
        Each dictionary has keys: 'name', 'shares', and 'price'.
     '''
     
     mainport = fileparse.parse_csv(
         filename=filename,
-        types=[str, int, float]
+        select=select,
+        types=types,
+        has_headers=has_headers,
+        delimiter=delimiter,
+        silence_errors=silence_errors
     )    
     
     return mainport
